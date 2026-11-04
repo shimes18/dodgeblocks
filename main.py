@@ -26,6 +26,9 @@ while running:
         block.x = random.randint(0,500)
 
 
+    if player.colliderect(block):
+        print("Game over!")
+        running=False;
 
 
     screen.fill((20,20,40))

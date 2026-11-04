@@ -40,11 +40,16 @@ death_sound.set_volume(0.8)
 start_sound = pygame.mixer.Sound("start.mp3")
 start_sound.set_volume(0.8)
 
+bg_sound = pygame.mixer.Sound("bg.mp3")
+bg_sound.set_volume(0.5)
+bg_sound.play(-1)
 
 game_over=False
 
 while running:
     for event in pygame.event.get():
+
+        
         if event.type == pygame.QUIT:
             running=False
 
@@ -57,6 +62,7 @@ while running:
             timer=0
             timer2=0
             score=0
+            bg_sound.play(-1)
             game_over=False
 
         if not started and event.type== pygame.KEYDOWN and event.key == pygame.K_SPACE:
@@ -82,10 +88,10 @@ while running:
         timer+=1
         if timer>=3*fps/speed:
 
-            b=random.randint(20,300)
+            b=random.choice([40,80,120,160,200,240])
             a=random.randint(0,400)
             blocks.append(pygame.Rect(a,0,b,40))
-            blocks.append(pygame.Rect(400-a,0,300-b,40))
+            blocks.append(pygame.Rect(400-a,0,280-b,40))
             timer=0
 
         for block in blocks:
@@ -98,6 +104,7 @@ while running:
         for block in blocks:           
             if block.y>500:
                 score+=1
+                start_sound.play()
                 blocks.remove(block)
 
         timer2+=1
@@ -132,6 +139,7 @@ while running:
         screen.blit(hst,(10,10))
 
         if game_over:
+            bg_sound.stop()
             if flash>0:
                     death.set_alpha(255)
                     screen.blit(death,(0,0))

@@ -5,36 +5,53 @@ pygame.init()
 screen = pygame.display.set_mode((400,500))
 
 player = pygame.Rect(100,460,40,40)
-block = pygame.Rect(random.randint(0,200),0,random.randint(0,400),40)
 
+fps=20
+score=0
+print(score)
 running=True
+
+blocks=[]
+
+timer=0
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running=False
 
-
+#key press logic
     press=pygame.key.get_pressed()
     if press[pygame.K_LEFT]:
         player.x -=5
     if press[pygame.K_RIGHT]:
         player.x +=5
 
-    block.y+=5
-    if block.y>500:
-        block.y=0
-        block.x = random.randint(0,500)
 
+#Keepig player in bound logic
+    if player.x>360:
+        player.x=360
+    if player.x<0:
+        player.x=0
 
-    if player.colliderect(block):
-        print("Game over!")
-        running=False;
+#For creating new block every few seconds
+    timer+=1
+    if timer==2*fps:
+        blocks.append(pygame.Rect(random.randint(40,200),0,random.randint(0,400),40))
+        timer=0
+
+    for block in blocks:
+        block.y+=5
+        if player.colliderect(block):
+            print("Game over!")
+            print("Score ", score)
+            running = False;
 
 
     screen.fill((20,20,40))
     pygame.draw.rect(screen,(0,255,255),player)
     pygame.draw.rect(screen,(0,200,200),block)
     pygame.display.flip()
-    pygame.time.Clock().tick(20)
+    pygame.time.Clock().tick(fps)
 
 pygame.quit()

@@ -19,14 +19,17 @@ started=False
 death = pygame.Surface((400,500))
 death.fill((255,0,0))
 
+blockimg= pygame.image.load("phantom.webp").convert_alpha()
+blockimg= pygame.transform.scale(blockimg,(40,40))
+
 
 blocks=[pygame.Rect(random.randint(0,400),0,random.randint(40,300),40),pygame.Rect(random.randint(0,400),0,random.randint(40,300),40)]
 
-phantom = pygame.image.load("phantom.webp").convert_alpha()
-phantom = pygame.transform.scale(phantom, (40,40))
+user = pygame.image.load("user.webp").convert_alpha()
+user = pygame.transform.scale(user, (40,40))
 
-phantom2 = pygame.image.load("phantom.webp").convert_alpha()
-phantom2 = pygame.transform.scale(phantom2, (40,40))
+user2 = pygame.image.load("user.webp").convert_alpha()
+user2 = pygame.transform.scale(user2, (40,40))
 
 timer=0
 timer2=0
@@ -121,15 +124,16 @@ while running:
         screen.blit(tell,(100,250))
         screen.blit(tell2,(130,280))
         pygame.draw.rect(screen,(0,255,255),logo)
-        screen.blit(phantom2 , logo)
+        screen.blit(user2 , logo)
 
     if started:
         screen.fill((20,20,40))
         pygame.draw.rect(screen,(0,255,255),player)
-        screen.blit(phantom , player)
+        screen.blit(user , player)
 
         for block in blocks:
-            pygame.draw.rect(screen,(0,200,200),block)
+            for x in range(block.x , block.right, 40):
+                screen.blit(blockimg,(x,block.y),(0,0,min(40,block.right-x),40))
 
 
         scoret = str(score/2)

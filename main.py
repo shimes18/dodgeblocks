@@ -17,7 +17,9 @@ running=True
 blocks=[pygame.Rect(random.randint(0,400),0,random.randint(40,300),40),pygame.Rect(random.randint(0,400),0,random.randint(40,300),40)]
 
 timer=0
+timer2=0
 
+speed=1
 
 game_over=False
 
@@ -52,16 +54,16 @@ while running:
 
             #For creating new block every few seconds
         timer+=1
-        if timer==3*fps:
+        if timer==3*fps/speed:
 
-            b=random.randint(40,300)
+            b=random.randint(20,300)
             a=random.randint(0,400)
             blocks.append(pygame.Rect(a,0,b,40))
             blocks.append(pygame.Rect(400-a,0,300-b,40))
             timer=0
 
         for block in blocks:
-            block.y+=5
+            block.y+=5*speed
             if player.colliderect(block):
                 print("Game over!")
                 print("Score ", score)
@@ -71,6 +73,11 @@ while running:
             if block.y==500:
                 score+=1
 
+        timer2+=1
+        if timer2==30*fps:
+            speed = speed+0.25
+            timer2 =0
+            
 
 
     screen.fill((20,20,40))
@@ -79,7 +86,7 @@ while running:
     for block in blocks:
         pygame.draw.rect(screen,(0,200,200),block)
 
-    text= font.render("Score: "+ str(int(score/2)),True,(255,255,255))
+    text= font.render("Score: "+ str(score/2)[0:1],True,(255,255,255))
     screen.blit(text,(200-36,0))
 
     if game_over:

@@ -11,7 +11,7 @@ score=0
 print(score)
 running=True
 
-blocks=[]
+blocks=[pygame.Rect(random.randint(0,400),0,random.randint(40,300),40),pygame.Rect(random.randint(0,400),0,random.randint(40,300),40)]
 
 timer=0
 
@@ -36,8 +36,11 @@ while running:
 
 #For creating new block every few seconds
     timer+=1
-    if timer==2*fps:
-        blocks.append(pygame.Rect(random.randint(40,200),0,random.randint(0,400),40))
+    if timer==3*fps:
+        a=pygame.Rect(random.randint(0,400)
+        b=random.randint(40,300)
+        blocks.append(a,0,b,40))
+        blocks.append(pygame.Rect(random.randint(a,400-a),0,random.randint(b,300-b),40))
         timer=0
 
     for block in blocks:
@@ -46,11 +49,16 @@ while running:
             print("Game over!")
             print("Score ", score)
             running = False;
+        if block.y==500:
+            score+=1
+
+
 
 
     screen.fill((20,20,40))
     pygame.draw.rect(screen,(0,255,255),player)
-    pygame.draw.rect(screen,(0,200,200),block)
+    for block in blocks:
+        pygame.draw.rect(screen,(0,200,200),block)
     pygame.display.flip()
     pygame.time.Clock().tick(fps)
 

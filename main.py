@@ -16,6 +16,9 @@ print(score)
 running=True
 started=False
 
+death = pygame.Surface((400,500))
+death.fill((255,0,0))
+
 
 blocks=[pygame.Rect(random.randint(0,400),0,random.randint(40,300),40),pygame.Rect(random.randint(0,400),0,random.randint(40,300),40)]
 
@@ -30,6 +33,13 @@ timer2=0
 
 highscore=0
 speed=1
+
+death_sound = pygame.mixer.Sound("death.mp3")
+death_sound.set_volume(0.8)
+
+start_sound = pygame.mixer.Sound("start.mp3")
+start_sound.set_volume(0.8)
+
 
 game_over=False
 
@@ -51,6 +61,8 @@ while running:
 
         if not started and event.type== pygame.KEYDOWN and event.key == pygame.K_SPACE:
             started=True
+            start_sound.play()
+
 
     if not game_over and started:
         #key press logic
@@ -80,6 +92,8 @@ while running:
             block.y+=5*speed
             if player.colliderect(block):
                 game_over=True
+                death_sound.play()
+                flash=200
 
         for block in blocks:           
             if block.y>500:
@@ -118,6 +132,10 @@ while running:
         screen.blit(hst,(10,10))
 
         if game_over:
+            if flash>0:
+                    death.set_alpha(255)
+                    screen.blit(death,(0,0))
+                    flash-=20
             if score>highscore:
                 highscore=score
             restart = font2.render("CLICK R TO RESTART",True,(255,255,255))

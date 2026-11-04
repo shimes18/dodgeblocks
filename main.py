@@ -159,7 +159,7 @@ async def main():
 
 
         pygame.display.flip()
-        pygame.time.Clock().tick(fps)
+        await asyncio.sleep(1/fps)   
 
     pygame.quit()
 

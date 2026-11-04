@@ -19,6 +19,7 @@ blocks=[pygame.Rect(random.randint(0,400),0,random.randint(40,300),40),pygame.Re
 timer=0
 timer2=0
 
+highscore=0
 speed=1
 
 game_over=False
@@ -75,7 +76,7 @@ while running:
 
         timer2+=1
         if timer2==30*fps:
-            speed = speed+0.25
+            speed = speed+0.5
             timer2 =0
             
 
@@ -86,10 +87,16 @@ while running:
     for block in blocks:
         pygame.draw.rect(screen,(0,200,200),block)
 
-    text= font.render("Score: "+ str(score/2)[0:1],True,(255,255,255))
+
+    scoret = str(score/2)
+    text= font.render("Score: "+ scoret[:scoret.index('.')],True,(255,255,255))
+    hst = font2.render("Highscore: " + str(highscore),True,(255,255,255))
     screen.blit(text,(200-36,0))
+    screen.blit(hst,(10,10))
 
     if game_over:
+        if score>highscore:
+            highscore=(score/2)
         restart = font2.render("CLICK R TO RESTART",True,(255,255,255))
         restart2 = font2.render("AND Q TO QUIT",True,(255,255,255))
         screen.blit(restart,(130,230))

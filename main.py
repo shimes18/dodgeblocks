@@ -5,7 +5,7 @@ pygame.init()
 screen = pygame.display.set_mode((400,500))
 
 font = pygame.font.SysFont(None,36)
-font2 = pygame.font.SysFont("PixelifySans-Regular.ttf",50)
+font2 = pygame.font.SysFont("PixelifySans-Regular.ttf",20)
 
 player = pygame.Rect(100,460,40,40)
 
@@ -18,6 +18,7 @@ blocks=[pygame.Rect(random.randint(0,400),0,random.randint(40,300),40),pygame.Re
 
 timer=0
 
+
 game_over=False
 
 while running:
@@ -27,6 +28,13 @@ while running:
 
         if game_over and event.type== pygame.KEYDOWN and event.key == pygame.K_q:
             running=False
+
+        if game_over and event.type== pygame.KEYDOWN and event.key == pygame.K_r:
+            block.y=500
+            blocks=[]
+            timer=0
+            score=0
+            game_over=False
 
     if not game_over:
         #key press logic
@@ -75,8 +83,11 @@ while running:
     screen.blit(text,(200-36,0))
 
     if game_over:
-        restart = font2.reader("CLICK R TO RESTART AND Q TO QUIT")
-        screen.blit(restart,(200,250))
+        restart = font2.render("CLICK R TO RESTART",True,(255,255,255))
+        restart2 = font2.render("AND Q TO QUIT",True,(255,255,255))
+        screen.blit(restart,(130,230))
+        screen.blit(restart2,(130,270))
+
 
     pygame.display.flip()
     pygame.time.Clock().tick(fps)

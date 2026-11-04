@@ -4,6 +4,8 @@ import random
 pygame.init()
 screen = pygame.display.set_mode((400,500))
 
+font = pygame.font.SysFont(None,36)
+
 player = pygame.Rect(100,460,40,40)
 
 fps=20
@@ -37,10 +39,11 @@ while running:
 #For creating new block every few seconds
     timer+=1
     if timer==3*fps:
-        a=pygame.Rect(random.randint(0,400)
+
         b=random.randint(40,300)
-        blocks.append(a,0,b,40))
-        blocks.append(pygame.Rect(random.randint(a,400-a),0,random.randint(b,300-b),40))
+        a=random.randint(0,400)
+        blocks.append(pygame.Rect(a,0,b,40))
+        blocks.append(pygame.Rect(400-a,0,300-b,40))
         timer=0
 
     for block in blocks:
@@ -57,8 +60,12 @@ while running:
 
     screen.fill((20,20,40))
     pygame.draw.rect(screen,(0,255,255),player)
+
     for block in blocks:
         pygame.draw.rect(screen,(0,200,200),block)
+
+    text= font.render("Score: "+ str(int(score/2)),True,(255,255,255))
+    screen.blit(text,(200-36,0))
     pygame.display.flip()
     pygame.time.Clock().tick(fps)
 

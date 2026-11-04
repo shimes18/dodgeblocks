@@ -5,6 +5,7 @@ pygame.init()
 screen = pygame.display.set_mode((400,500))
 
 font = pygame.font.SysFont(None,36)
+font2 = pygame.font.SysFont("PixelifySans-Regular.ttf",50)
 
 player = pygame.Rect(100,460,40,40)
 
@@ -17,44 +18,50 @@ blocks=[pygame.Rect(random.randint(0,400),0,random.randint(40,300),40),pygame.Re
 
 timer=0
 
+game_over=False
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running=False
 
-#key press logic
-    press=pygame.key.get_pressed()
-    if press[pygame.K_LEFT]:
-        player.x -=5
-    if press[pygame.K_RIGHT]:
-        player.x +=5
+        if game_over and event.type== pygame.KEYDOWN and event.key == pygame.K_q:
+            running=False
 
+    if not game_over:
+        #key press logic
+        press=pygame.key.get_pressed()
+        if press[pygame.K_LEFT]:
+            player.x -=5
+        if press[pygame.K_RIGHT]:
+            player.x +=5
 
-#Keepig player in bound logic
-    if player.x>360:
-        player.x=360
-    if player.x<0:
-        player.x=0
+        #Keepig player in bound logic
+        if player.x>360:
+            player.x=360
+        if player.x<0:
+            player.x=0
 
-#For creating new block every few seconds
-    timer+=1
-    if timer==3*fps:
+            #For creating new block every few seconds
+        timer+=1
+        if timer==3*fps:
 
-        b=random.randint(40,300)
-        a=random.randint(0,400)
-        blocks.append(pygame.Rect(a,0,b,40))
-        blocks.append(pygame.Rect(400-a,0,300-b,40))
-        timer=0
+            b=random.randint(40,300)
+            a=random.randint(0,400)
+            blocks.append(pygame.Rect(a,0,b,40))
+            blocks.append(pygame.Rect(400-a,0,300-b,40))
+            timer=0
 
-    for block in blocks:
-        block.y+=5
-        if player.colliderect(block):
-            print("Game over!")
-            print("Score ", score)
-            running = False;
-        if block.y==500:
-            score+=1
+        for block in blocks:
+            block.y+=5
+            if player.colliderect(block):
+                print("Game over!")
+                print("Score ", score)
+                game_over=True
 
+                    
+            if block.y==500:
+                score+=1
 
 
 
@@ -66,6 +73,11 @@ while running:
 
     text= font.render("Score: "+ str(int(score/2)),True,(255,255,255))
     screen.blit(text,(200-36,0))
+
+    if game_over:
+        restart = font2.reader("CLICK R TO RESTART AND Q TO QUIT")
+        screen.blit(restart,(200,250))
+
     pygame.display.flip()
     pygame.time.Clock().tick(fps)
 

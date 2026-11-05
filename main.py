@@ -4,6 +4,7 @@ import asyncio
 
 pygame.init()
 screen = pygame.display.set_mode((400,500))
+clock= pygame.time.Clock()
 
 async def main():
     font = pygame.font.SysFont(None,36)
@@ -21,16 +22,16 @@ async def main():
     death = pygame.Surface((400,500))
     death.fill((255,0,0))
 
-    blockimg= pygame.image.load("images/phantom.webp").convert_alpha()
+    blockimg= pygame.image.load("images/phantom.png").convert_alpha()
     blockimg= pygame.transform.scale(blockimg,(40,40))
 
 
     blocks=[pygame.Rect(random.randint(0,400),0,random.randint(40,300),40),pygame.Rect(random.randint(0,400),0,random.randint(40,300),40)]
 
-    user = pygame.image.load("images/user.webp").convert_alpha()
+    user = pygame.image.load("images/user.png").convert_alpha()
     user = pygame.transform.scale(user, (40,40))
 
-    user2 = pygame.image.load("images/user.webp").convert_alpha()
+    user2 = pygame.image.load("images/user.png").convert_alpha()
     user2 = pygame.transform.scale(user2, (40,40))
 
     timer=0
@@ -59,9 +60,18 @@ async def main():
                 running=False
 
             if game_over and event.type== pygame.KEYDOWN and event.key == pygame.K_q:
-                running=False
+                speed=1
+                block.y=500
+                blocks=[]
+                timer=0
+                timer2=0
+                score=0
+                bg_sound.play(-1)
+                game_over=False
+                started=False
 
             if game_over and event.type== pygame.KEYDOWN and event.key == pygame.K_r:
+                speed=1
                 block.y=500
                 blocks=[]
                 timer=0
@@ -117,6 +127,7 @@ async def main():
                 speed = speed+0.5
                 timer2 =0
                 
+        screen.fill((20,20,40))
 
         if not started:
             title= font.render("DODGE BLOCKS", True , (255,255,255))
@@ -127,7 +138,7 @@ async def main():
             screen.blit(tell2,(130,280))
             pygame.draw.rect(screen,(0,255,255),logo)
             screen.blit(user2 , logo)
-
+            
         if started:
             screen.fill((20,20,40))
             pygame.draw.rect(screen,(0,255,255),player)
@@ -153,14 +164,14 @@ async def main():
                 if score>highscore:
                     highscore=score
                 restart = font2.render("CLICK R TO RESTART",True,(255,255,255))
-                restart2 = font2.render("AND Q TO QUIT",True,(255,255,255))
+                restart2 = font2.render("AND Q TO RETURN HOME",True,(255,255,255))
                 screen.blit(restart,(130,230))
                 screen.blit(restart2,(130,270))
 
 
         pygame.display.flip()
-        await asyncio.sleep(1/fps)   
+        clock.tick(fps)
+        await asyncio.sleep(0)   
 
-    pygame.quit()
 
 asyncio.run(main())
